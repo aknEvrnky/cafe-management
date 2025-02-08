@@ -7,7 +7,7 @@ use function PHPUnit\Framework\assertEquals;
 test('user can view login page', function () {
     $response = $this->get('/login')
         ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page->component('Auth/Create'));
+        ->assertInertia(fn (Assert $page) => $page->component('Auth/Create')->has('appName'));
 });
 
 test('user can login', function () {
