@@ -64,4 +64,11 @@ class User extends Authenticatable
     {
         return sprintf('%s %s', $this->name, $this->surname);
     }
+
+    public function switchCafe(Cafe $cafe): void
+    {
+        $this->update([
+            'current_cafe_id' => $cafe->id,
+        ]);
+    }
 }

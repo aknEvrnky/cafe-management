@@ -37,9 +37,7 @@ class RegisterController extends Controller
             'slug' => $uniqueSlug,
         ]);
 
-        $user->update([
-            'current_cafe_id' => $cafe->id,
-        ]);
+        $user->switchCafe($cafe);
 
         return to_route('dashboard');
     }

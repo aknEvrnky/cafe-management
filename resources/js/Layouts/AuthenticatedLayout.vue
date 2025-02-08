@@ -5,12 +5,16 @@
     >
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
-                <button class="hidden lg:block" @click="toggleNaw()">
-                    <component :is="showNav ? 'Bars3CenterLeftIcon' : 'Bars3Icon'" class="block h-8 w-8 mr-4 text-blue-400 cursor-pointer"/>
-                </button>
-                <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    Yönetim Paneli
-                </h2>
+                <div class="flex items-center">
+                    <button class="hidden lg:block" @click="toggleNav()">
+                        <component :is="showNav ? 'Bars3CenterLeftIcon' : 'Bars3Icon'" class="block h-8 w-8 mr-4 text-blue-400 cursor-pointer"/>
+                    </button>
+                    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                        <Link :href="route('dashboard')">
+                            Yönetim Paneli
+                        </Link>
+                    </h2>
+                </div>
 
                 <div class="flex items-center space-x-4">
                     <Dropdown>
@@ -36,7 +40,7 @@
                                     Kafe Ayarları
                                 </DropdownItem>
 
-                                <DropdownItem url="Kafe Olustur">
+                                <DropdownItem :url="route('cafes.create')">
                                     Yeni Kafe Oluştur
                                 </DropdownItem>
 
@@ -49,8 +53,7 @@
                                     </div>
 
                                     <template v-for="cafe in cafes">
-                                        <!-- todo: cafe update link -->
-                                        <DropdownItem url="kafe guncelleme linki" method="put" :data="{}">
+                                        <DropdownItem :url="route('cafes.switch')" method="put" :data="{cafe_id: cafe.id}">
                                             <div class="flex items-center">
                                                 <ApproveTick v-if="cafe.id === $page.props.auth.user.attributes.current_cafe_id" class="mr-2 h-5 w-5 text-green-400" />
 
@@ -102,7 +105,7 @@ import DropdownItem from "@/Components/Dropdown/DropdownItem.vue";
 import {Bars3CenterLeftIcon, Bars3Icon, ChevronDownIcon} from "@heroicons/vue/20/solid/index.js";
 import TwoWayArrow from "@/Components/SVG/TwoWayArrow.vue";
 import ApproveTick from "@/Components/SVG/ApproveTick.vue";
-import {usePage} from "@inertiajs/vue3";
+import {Link, usePage} from "@inertiajs/vue3";
 
 export default {
     name: 'AuthenticatedLayout',
@@ -114,16 +117,23 @@ export default {
         Bars3Icon,
         DropdownItem,
         Dropdown,
-        Navigation
+        Navigation,
+        Link,
     },
     data() {
         return {
             showNav: false,
-        }
+        };
+    },
+    created() {
+        // get it from local storage
+        this.showNav = localStorage.getItem('showNav') === 'true';
     },
     methods: {
-        toggleNaw() {
+        toggleNav() {
             this.showNav = !this.showNav;
+
+            localStorage.setItem('showNav', this.showNav);
         }
     },
     computed: {

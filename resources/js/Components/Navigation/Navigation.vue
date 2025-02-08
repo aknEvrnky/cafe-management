@@ -17,7 +17,7 @@ export default {
 <template>
     <TransitionRoot
         as="div"
-        class="p-4 bg-white sticky nav-main mt-[1px]"
+        class="p-4 bg-gray-50 sticky nav-main mt-[1px]"
         :show="open"
         enter="transition-opacity duration-150 transition-width"
         enter-from="opacity-0"

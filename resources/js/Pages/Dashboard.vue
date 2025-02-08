@@ -20,7 +20,6 @@ export default {
 </script>
 
 <template>
-
     <AuthenticatedLayout>
         <Head title="Dashboard" />
 
