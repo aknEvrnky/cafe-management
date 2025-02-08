@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -34,12 +35,14 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'app_name' => config('app.name'),
             'auth' => [
-                'user' => tap(new UserResource($request->user()), fn(UserResource $resource) => $resource->withCafes()->withoutWrapping()),
+                'user' => $request->user() instanceof User
+                    ? tap(new UserResource($request->user()), fn(UserResource $resource) => $resource->withCafes()->withoutWrapping())
+                    : null,
             ],
             'flash' => [
-                'success' => fn () => $request->session()->get('success'),
-                'error' => fn () => $request->session()->get('error'),
-                'warning' => fn () => $request->session()->get('warning'),
+                'success' => fn() => $request->session()->get('success'),
+                'error' => fn() => $request->session()->get('error'),
+                'warning' => fn() => $request->session()->get('warning'),
             ],
         ];
     }
