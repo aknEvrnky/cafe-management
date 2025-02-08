@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Cafe::class);
     }
+
+    public function getFullNameAttribute(): string
+    {
+        return sprintf('%s %s', $this->name, $this->surname);
+    }
 }

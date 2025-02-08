@@ -1,22 +1,18 @@
 <script>
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import LoginForm from "@/Components/LoginForm.vue";
+import {Head} from "@inertiajs/vue3";
 
 export default {
 	name: "Create",
-	components: {GuestLayout, LoginForm},
-	props: {
-		appName: {
-			type: String,
-			required: true,
-		}
-	},
+	components: {Head, GuestLayout, LoginForm},
 }
 </script>
 
 <template>
 	<GuestLayout>
-		<LoginForm :appName="appName" />
+        <Head title="Giriş Yap" />
+		<LoginForm />
 	</GuestLayout>
 </template>
 

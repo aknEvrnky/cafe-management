@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Panel\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +14,7 @@ class AuthController extends Controller
 {
     public function create(): Response
     {
-        $appName = config('app.name');
-
-        return Inertia::render('Auth/Create', [
-            'appName' => $appName,
-        ]);
+        return Inertia::render('Auth/Create');
     }
 
     public function store(LoginRequest $request): RedirectResponse

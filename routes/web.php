@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Panel\AuthController;
+use App\Http\Controllers\Panel\RegisterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,3 +24,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'store')->name('login')->middleware(['guest']);
     Route::post('/logout', 'destroy')->name('logout')->middleware(['auth']);
 });
+
+Route::get('/register', [RegisterController::class, 'create'])->name('register')->middleware(['guest']);
+Route::post('/register', [RegisterController::class, 'store'])->name('register')->middleware(['guest']);
