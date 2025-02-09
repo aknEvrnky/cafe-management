@@ -21,7 +21,7 @@
                         <template v-slot:header>
                             <span class="inline-flex rounded-md">
                                 <div>
-                                    {{ currentCafe.attributes.title }}
+                                    {{ $currentCafe().attributes.title }}
                                 </div>
 
                                 <TwoWayArrow class="ml-2 -mr-0.5 h-4 w-4" />
@@ -45,14 +45,14 @@
                                 </DropdownItem>
 
                                 <!-- Cafe Switcher -->
-                                <template v-if="cafes.length > 1">
+                                <template v-if="$cafes().length > 1">
                                     <div class="border-t border-gray-200" />
 
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         Kafe Değiştir
                                     </div>
 
-                                    <template v-for="cafe in cafes">
+                                    <template v-for="cafe in $cafes()">
                                         <DropdownItem :url="route('cafes.switch')" method="put" :data="{cafe_id: cafe.id}">
                                             <div class="flex items-center">
                                                 <ApproveTick v-if="cafe.id === $page.props.auth.user.attributes.current_cafe_id" class="mr-2 h-5 w-5 text-green-400" />
@@ -105,7 +105,7 @@ import DropdownItem from "@/Components/Dropdown/DropdownItem.vue";
 import {Bars3CenterLeftIcon, Bars3Icon, ChevronDownIcon} from "@heroicons/vue/20/solid/index.js";
 import TwoWayArrow from "@/Components/SVG/TwoWayArrow.vue";
 import ApproveTick from "@/Components/SVG/ApproveTick.vue";
-import {Link, usePage} from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 
 export default {
     name: 'AuthenticatedLayout',
@@ -134,16 +134,6 @@ export default {
             this.showNav = !this.showNav;
 
             localStorage.setItem('showNav', this.showNav);
-        }
-    },
-    computed: {
-        cafes() {
-            return usePage().props.auth.user.relationships.cafes;
-        },
-        currentCafe() {
-            let cafeId = usePage().props.auth.user.attributes.current_cafe_id;
-
-            return this.cafes.find(cafe => cafe.id === cafeId);
         }
     }
 };
