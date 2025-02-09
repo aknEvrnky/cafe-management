@@ -3,12 +3,15 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import TextInput from "@/Components/Inputs/TextInput.vue";
 import {Head, useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
+import debounce from "lodash/debounce";
 import DropdownItem from "@/Components/Dropdown/DropdownItem.vue";
 import Header from "@/Components/Header.vue";
+import FileUploadInput from "@/Components/Inputs/FileUploadInput.vue";
 
 export default {
-    name: "EditCurrentCafe",
+    name: "Create",
     components: {
+        FileUploadInput,
         Header,
         DropdownItem,
         Head,
@@ -16,8 +19,8 @@ export default {
         AuthenticatedLayout
     },
     methods: {
-        update() {
-            this.formData.post(route('cafes.store'),{
+        save() {
+            this.formData.post(route('product-categories.store'),{
                 onSuccess: () => {
                     this.formData.reset();
                     this.toast.success('Kafe başarıyla oluşturuldu.');
@@ -33,6 +36,7 @@ export default {
         const toast = useToast();
         const formData = useForm({
             title: '',
+            image: '',
             slug: '',
         });
 
@@ -41,28 +45,26 @@ export default {
             toast
         }
     },
-    mounted() {
-        this.formData.title = this.$currentCafe().attributes.title;
-        this.formData.slug = this.$currentCafe().attributes.slug;
+    watch: {
+        'formData.title': debounce(function (value) {
+            this.formData.slug = value.toLowerCase().replace(/ /g, '-');
+        }, 500)
     }
 }
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <Header :title="`${$currentCafe().attributes.title} - Kafesini Düzenle`" return-link-title="Yönetim Paneli" :return-link-url="route('dashboard')">
-            <template v-slot:dropdown-content>
-                <DropdownItem :url="route('cafes.create')" text="Yeni Kafe Ekle" />
-            </template>
-        </Header>
+        <Header title="Ürün Kategorisi Oluştur" return-link-title="Yönetim Paneli" :return-link-url="route('dashboard')" />
 
         <div class="form-area">
             <form @submit.prevent="save()" id="form">
                 <div class="grid grid-cols-2 gap-x-6 gap-y-12 mb-6">
-                    <TextInput title="Başlık" v-model="formData.title" name="title" required />
-                    <TextInput title="Slug" v-model="formData.slug" name="title" required />
+                    <TextInput title="Başlık" v-model="formData.title" name="title" :required="true" />
+                    <TextInput title="Slug" v-model="formData.slug" name="slug" :required="true" />
+                    <FileUploadInput title="Görsel" v-model="formData.image" name="image" :required="true" />
                     <div class="col-span-2 flex justify-end">
-                        <button type="submit" class="btn">Güncelle</button>
+                        <button type="submit" class="btn">Oluştur</button>
                     </div>
                 </div>
             </form>

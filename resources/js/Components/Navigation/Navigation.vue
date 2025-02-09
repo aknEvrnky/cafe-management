@@ -29,7 +29,10 @@ export default {
         <div class="">
             <ul class="text-gray-700 grid divide-y divide-solid">
                 <li class="block py-2">
-                    <NavigationLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</NavigationLink>
+                    <NavigationLink :href="route('dashboard')" :active="route().current('dashboard')">Ana Sayfa</NavigationLink>
+                </li>
+                <li class="block py-2">
+                    <NavigationLink :href="route('product-categories.index')" :active="route().current('product-categories.index')">Ürün Kategorileri</NavigationLink>
                 </li>
             </ul>
         </div>

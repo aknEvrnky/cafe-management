@@ -27,6 +27,10 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::put('/cafes/switch', [CafeController::class, 'switchCafe'])->name('cafes.switch');
     Route::get('/cafes/edit-current-cafe', [CafeController::class, 'editCurrentCafe'])->name('cafes.edit-current-cafe');
     Route::post('/cafes/update-current-cafe', [CafeController::class, 'updateCurrentCafe'])->name('cafes.update-current-cafe');
+
+    Route::get('/product-categories', [ProductCategoryController::class, 'index'])->name('product-categories.index');
+    Route::get('/product-categories/create', [ProductCategoryController::class, 'create'])->name('product-categories.create');
+    Route::post('/product-categories', [ProductCategoryController::class, 'store'])->name('product-categories.store');
 });
 
 Route::controller(AuthController::class)->group(function () {

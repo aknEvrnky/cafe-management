@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Panel\Cafe;
 
+use App\Rules\SlugRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreateCafeRequest extends FormRequest
+class UpdateCurrentCafeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +25,7 @@ class CreateCafeRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string'],
-            'slug' => ['required', 'string', 'unique:cafes,slug'],
+            'slug' => ['required', 'string', Rule::unique('cafes', 'slug')->ignore($this->user()->current_cafe_id), new SlugRule()],
         ];
     }
 }

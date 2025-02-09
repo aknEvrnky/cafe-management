@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateCafeRequest;
-use App\Http\Requests\UpdateCurrentCafeRequest;
+use App\Http\Requests\Panel\Cafe\CreateCafeRequest;
+use App\Http\Requests\Panel\Cafe\UpdateCurrentCafeRequest;
 use App\Models\Cafe;
 use App\Services\UniqueCafeSlugService;
 use Illuminate\Http\JsonResponse;

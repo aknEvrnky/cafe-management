@@ -18,7 +18,7 @@ export default {
     },
     methods: {
         save() {
-            this.formData.post(route('cafes.store', this.project),{
+            this.formData.post(route('cafes.store'), {
                 onSuccess: () => {
                     this.formData.reset();
                     this.toast.success('Kafe başarıyla oluşturuldu.');
@@ -44,14 +44,14 @@ export default {
     },
     watch: {
         'formData.title': debounce(function (value) {
-            axios.post(route('cafes.unique-slug', this.project), {
+            axios.post(route('cafes.unique-slug', {
                 title: value
             }).then(response => {
                 this.formData.slug = response.data.slug;
                 this.toast.success('Slug başarıyla oluşturuldu.');
             }).catch(() => {
                 this.formData.slug = '';
-            });
+            }));
         }, 500),
     }
 }
@@ -65,7 +65,7 @@ export default {
             <form @submit.prevent="save()" id="form">
                 <div class="grid grid-cols-2 gap-x-6 gap-y-12 mb-6">
                     <TextInput title="Başlık" v-model="formData.title" name="title" required />
-                    <TextInput title="Slug" v-model="formData.slug" name="title" required />
+                    <TextInput title="Slug" v-model="formData.slug" name="slug" required />
                     <div class="col-span-2 flex justify-end">
                         <button type="submit" class="btn">Oluştur</button>
                     </div>

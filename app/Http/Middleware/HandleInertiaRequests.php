@@ -36,7 +36,7 @@ class HandleInertiaRequests extends Middleware
             'app_name' => config('app.name'),
             'auth' => [
                 'user' => $request->user() instanceof User
-                    ? tap(new UserResource($request->user()), fn(UserResource $resource) => $resource->withCafes()->withoutWrapping())
+                    ? tap(new UserResource($request->user()), fn(UserResource $resource) => $resource->withCafes())
                     : null,
             ],
             'flash' => [
