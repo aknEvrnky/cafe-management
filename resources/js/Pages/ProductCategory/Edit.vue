@@ -9,7 +9,7 @@ import Header from "@/Components/Header.vue";
 import FileUploadInput from "@/Components/Inputs/FileUploadInput.vue";
 
 export default {
-    name: "Create",
+    name: "Edit",
     components: {
         FileUploadInput,
         Header,
@@ -18,27 +18,35 @@ export default {
         TextInput,
         AuthenticatedLayout
     },
+    props: {
+        productCategory: {
+            type: Object,
+            required: true
+        }
+    },
     methods: {
-        save() {
-            this.formData.post(route('product-categories.store'), {
+        update() {
+            this.formData.put(route('product-categories.update', this.productCategory),{
                 onSuccess: () => {
                     this.formData.reset();
-                    this.toast.success('Ürün kategorisi başarıyla oluşturuldu.');
+                    this.toast.success('Kafe başarıyla güncellendi.');
                 },
                 onError: () => {
                     this.formData.reset();
+                    this.formData.keyword_groups = [];
                 },
-                preserveScroll: true,
-                forceFormData: true
             });
-        }
+        },
+        deleteConfirm() {
+            return window.confirm('Bu kategoriyi silmek istediğinize emin misiniz? Buna bağlı tüm ürünler de silinecektir.');
+        },
     },
-    setup() {
+    setup(props) {
         const toast = useToast();
         const formData = useForm({
-            title: '',
+            title: props.productCategory.attributes.title,
+            slug: props.productCategory.attributes.slug,
             image: null,
-            slug: '',
         });
 
         return {
@@ -50,28 +58,31 @@ export default {
         'formData.title': debounce(function (value) {
             this.formData.slug = value.toLowerCase().replace(/ /g, '-');
         }, 500)
-    }
+    },
 }
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <Header title="Ürün Kategorisi Oluştur" return-link-title="Ürün Kategorileri" :return-link-url="route('product-categories.index')" />
+        <Header :title="`${productCategory.attributes.title} - Kategorisini Düzenle`" dropdown-text="Yönet" return-link-title="Ürün Kategorileri" :return-link-url="route('product-categories.index')">
+            <template v-slot:dropdown-content>
+                <DropdownItem :url="route('product-categories.create')" text="Yeni Kategori Ekle" />
+                <DropdownItem :onBefore="() => deleteConfirm()" method="delete" :url="route('product-categories.destroy', productCategory)">
+                    <span class="text-red-500">
+                        Kategoriyi Sil
+                    </span>
+                </DropdownItem>
+            </template>
+        </Header>
 
         <div class="form-area">
-            <form @submit.prevent="save()" id="form" enctype="multipart/form-data">
+            <form @submit.prevent="update()" id="form">
                 <div class="grid grid-cols-2 gap-x-6 gap-y-12 mb-6">
                     <TextInput title="Başlık" v-model="formData.title" name="title" :required="true" />
                     <TextInput title="Slug" v-model="formData.slug" name="slug" :required="true" />
-                    <FileUploadInput 
-                        title="Görsel" 
-                        v-model="formData.image" 
-                        name="image" 
-                        :required="true"
-                        :preview="null"
-                    />
+                    <FileUploadInput title="Görsel" :preview="productCategory.attributes.image" v-model="formData.image" name="image" :required="true" />
                     <div class="col-span-2 flex justify-end">
-                        <button type="submit" class="btn">Oluştur</button>
+                        <button type="submit" class="btn">Güncelle</button>
                     </div>
                 </div>
             </form>
@@ -80,7 +91,5 @@ export default {
 </template>
 
 <style scoped>
-.btn {
-    @apply text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center;
-}
+
 </style>

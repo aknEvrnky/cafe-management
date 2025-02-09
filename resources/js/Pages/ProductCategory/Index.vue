@@ -6,6 +6,7 @@ import DropdownItem from "@/Components/Dropdown/DropdownItem.vue";
 import TableRow from "@/Components/Table/TableRow.vue";
 import TextColumn from "@/Components/Table/TextColumn.vue";
 import ImageColumn from "@/Components/Table/ImageColumn.vue";
+import {Link} from "@inertiajs/vue3";
 
 export default {
     name: "Index",
@@ -17,6 +18,7 @@ export default {
         Table,
         AuthenticatedLayout,
         Header,
+        Link,
     },
     props: {
         productCategories: {
@@ -24,6 +26,11 @@ export default {
             required: true
         }
     },
+    methods: {
+        deleteConfirm() {
+            return window.confirm('Bu kategoriyi silmek istediğinize emin misiniz? Buna bağlı tüm ürünler de silinecektir.');
+        },
+    }
 }
 </script>
 
@@ -49,9 +56,8 @@ export default {
 
                 <TextColumn>
                     <div class="flex gap-x-5 items-center">
-                        <!-- todo: links -->
-                        <a href="#" class="btn-sm btn-primary">Düzenle</a>
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Sil</a>
+                        <Link :href="route('product-categories.edit', productCategory)">Düzenle</Link>
+                        <Link :onBefore="() => deleteConfirm()" method="delete" :href="route('product-categories.destroy', productCategory)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Sil</Link>
                     </div>
                 </TextColumn>
             </TableRow>
