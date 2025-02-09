@@ -20,7 +20,7 @@
 
                     <div class="card-body text-center">
                         <h5 class="card-title mb-0">{{ $category->title }}</h5>
-                        <a href="#" class="stretched-link"></a>
+                        <a href="{{route('product-categories.view', [$cafe, $category])}}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
