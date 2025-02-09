@@ -39,6 +39,49 @@ test('user can create a new cafe', function () {
     ]);
 });
 
+test('user can view current cafe edit page', function () {
+    $otherCafe = Cafe::factory()->create();
+    $user = $otherCafe->owner;
+
+    $currentCafe = Cafe::factory()->create([
+        'user_id' => $user->id,
+    ]);
+
+    $user->switchCafe($currentCafe);
+
+    $this->actingAs($user);
+
+    $this->get('/dashboard/cafes/edit-current-cafe')
+        ->assertOk()
+        ->assertInertia(fn(Assert $page) => $page
+            ->component('Cafe/EditCurrentCafe')
+        );
+});
+
+test('user can update current cafe settings', function () {
+    $defaultCafe = Cafe::factory()->create();
+    $user = $defaultCafe->owner;
+
+    $this->actingAs($user);
+
+    $cafe = Cafe::factory()->create([
+        'user_id' => $user->id,
+    ]);
+
+    $user->switchCafe($cafe);
+
+    $this->post('/dashboard/cafes/update-current-cafe', [
+        'title' => 'The Coffee Shop',
+        'slug' => 'the-coffee-shop',
+    ])->assertRedirect('/dashboard/cafes/edit-current-cafe');
+
+    assertDatabaseHas('cafes', [
+        'id' => $cafe->id,
+        'title' => 'The Coffee Shop',
+        'slug' => 'the-coffee-shop',
+    ]);
+});
+
 test('user can switch to other cafe', function () {
     $defaultCafe = Cafe::factory()->create();
     $user = $defaultCafe->owner;

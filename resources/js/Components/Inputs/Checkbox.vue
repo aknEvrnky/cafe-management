@@ -11,7 +11,7 @@ export default {
             required: true
         },
         modelValue: {
-            type: String,
+            type: Boolean,
             required: true
         }
     }

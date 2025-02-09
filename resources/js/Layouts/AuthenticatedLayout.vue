@@ -19,13 +19,11 @@
                 <div class="flex items-center space-x-4">
                     <Dropdown>
                         <template v-slot:header>
-                            <span class="inline-flex rounded-md">
-                                <div>
-                                    {{ $currentCafe().attributes.title }}
-                                </div>
+                            <div class="inline-flex rounded-md">
+                                {{ $currentCafe().attributes.title }}
 
                                 <TwoWayArrow class="ml-2 -mr-0.5 h-4 w-4" />
-                            </span>
+                            </div>
                         </template>
 
                         <template v-slot:default>
@@ -36,7 +34,7 @@
                                 </div>
 
                                 <!-- Cafe Settings -->
-                                <DropdownItem url="mevcut kafe yonetimi">
+                                <DropdownItem :url="route('cafes.edit-current-cafe')">
                                     Kafe Ayarları
                                 </DropdownItem>
 

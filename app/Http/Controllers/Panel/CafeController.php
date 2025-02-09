@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCafeRequest;
+use App\Http\Requests\UpdateCurrentCafeRequest;
 use App\Models\Cafe;
 use App\Services\UniqueCafeSlugService;
 use Illuminate\Http\JsonResponse;
@@ -60,5 +61,21 @@ class CafeController extends Controller
         $request->user()->switchCafe($cafe);
 
         return to_route('dashboard')->with('success', 'Kafe başarıyla değiştirildi.');
+    }
+
+    public function editCurrentCafe(Request $request): Response
+    {
+        return Inertia::render('Cafe/EditCurrentCafe');
+    }
+
+    public function updateCurrentCafe(UpdateCurrentCafeRequest $request): RedirectResponse
+    {
+        $request->validated();
+
+        $cafe = $request->user()->currentCafe;
+
+        $cafe->update($request->only('title', 'slug'));
+
+        return to_route('cafes.edit-current-cafe')->with('info', 'Kafe başarıyla güncellendi.');
     }
 }

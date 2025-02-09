@@ -3,6 +3,7 @@
 use App\Http\Controllers\Panel\AuthController;
 use App\Http\Controllers\Panel\CafeController;
 use App\Http\Controllers\Panel\DashboardController;
+use App\Http\Controllers\Panel\ProductCategoryController;
 use App\Http\Controllers\Panel\RegisterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -19,10 +20,13 @@ Route::get('/', function () {
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
+
     Route::get('/cafes/create', [CafeController::class, 'create'])->name('cafes.create');
     Route::post('/cafes', [CafeController::class, 'store'])->name('cafes.store');
     Route::post('/cafes/unique-slug', [CafeController::class, 'uniqueSlug'])->name('cafes.unique-slug');
     Route::put('/cafes/switch', [CafeController::class, 'switchCafe'])->name('cafes.switch');
+    Route::get('/cafes/edit-current-cafe', [CafeController::class, 'editCurrentCafe'])->name('cafes.edit-current-cafe');
+    Route::post('/cafes/update-current-cafe', [CafeController::class, 'updateCurrentCafe'])->name('cafes.update-current-cafe');
 });
 
 Route::controller(AuthController::class)->group(function () {
