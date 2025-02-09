@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Panel\AuthController;
 use App\Http\Controllers\Panel\CafeController;
+use App\Http\Controllers\Front\CafeController as FrontCafeController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\ProductCategoryController;
 use App\Http\Controllers\Panel\ProductController;
@@ -52,3 +53,5 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::get('/register', [RegisterController::class, 'create'])->name('register')->middleware(['guest']);
 Route::post('/register', [RegisterController::class, 'store'])->name('register')->middleware(['guest']);
+
+Route::get('/{cafe:slug}', FrontCafeController::class)->name('cafes.view');

@@ -1,0 +1,30 @@
+.hover-scale {
+    transition: transform 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+    transform: scale(1.02);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-img-top {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.text-light-gray {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.hover-white:hover {
+    color: white !important;
+    transition: color 0.2s ease-in-out;
+}
