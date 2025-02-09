@@ -23,5 +23,9 @@ class ProductCategoryObserver
     public function deleted(ProductCategory $productCategory): void
     {
         Storage::delete($productCategory->image);
+
+        $productCategory->products->each(function ($product) {
+            $product->delete();
+        });
     }
 }

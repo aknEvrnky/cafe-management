@@ -34,6 +34,9 @@ export default {
                 <li class="block py-2">
                     <NavigationLink :href="route('product-categories.index')" :active="route().current('product-categories.index')">Ürün Kategorileri</NavigationLink>
                 </li>
+                <li class="block py-2">
+                    <NavigationLink :href="route('products.index')" :active="route().current('products.index')">Ürünler</NavigationLink>
+                </li>
             </ul>
         </div>
     </TransitionRoot>
